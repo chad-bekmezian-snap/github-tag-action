@@ -52,6 +52,7 @@ export default async function main() {
   }
 
   const currentBranch = getBranchFromRef(GITHUB_REF);
+  core.info(`current branch: ${currentBranch}`);
   const isReleaseBranch = releaseBranches
     .split(',')
     .some((branch) => currentBranch.match(branch));
@@ -73,12 +74,14 @@ export default async function main() {
     prefixRegex,
     /true/i.test(shouldFetchAllTags)
   );
+  core.info(`valid tags ${JSON.stringify(validTags, null, 3)}`);
   const latestTag = getLatestTag(validTags, prefixRegex, tagPrefix);
   const latestPrereleaseTag = getLatestPrereleaseTag(
     validTags,
     identifier,
     prefixRegex
   );
+  core.info(`latest tag ${latestTag}`);
 
   let commits: Await<ReturnType<typeof getCommits>>;
 
