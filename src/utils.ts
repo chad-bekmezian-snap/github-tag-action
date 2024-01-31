@@ -13,6 +13,7 @@ export async function getValidTags(
   shouldFetchAllTags: boolean
 ) {
   const tags = await listTags(shouldFetchAllTags);
+  core.info(`tags: ${JSON.stringify(tags, null, 3)}`);
 
   const invalidTags = tags.filter(
     (tag) =>

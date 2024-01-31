@@ -81,7 +81,7 @@ export default async function main() {
     identifier,
     prefixRegex
   );
-  core.info(`latest tag ${latestTag}`);
+  core.info(`latest tag ${JSON.stringify(latestTag)}`);
 
   let commits: Await<ReturnType<typeof getCommits>>;
 
