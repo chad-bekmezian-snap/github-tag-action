@@ -1,0 +1,458 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "OvrC Interop API",
+    "description" : "",
+    "version" : "HEAD"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/Snap-AV/ovrc-interop-api/HEAD",
+    "description" : "SwaggerHub API Auto Mocking"
+  }, {
+    "url" : "https://api.interop-dev.snapone.com",
+    "description" : "dev"
+  }, {
+    "url" : "https://api.interop-stage.snapone.com",
+    "description" : "stage"
+  }, {
+    "url" : "https://api.interop.snapone.com",
+    "description" : "prod"
+  } ],
+  "security" : [ {
+    "BearerJWT" : [ ]
+  } ],
+  "paths" : {
+    "/v1/integrations/{integrationId}/devices/{deviceId}/storage" : {
+      "get" : {
+        "tags" : [ "Storage", "3P API" ],
+        "operationId" : "getIntegrationDeviceStorage",
+        "parameters" : [ {
+          "name" : "integrationId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "deviceId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Storage", "3P API" ],
+        "operationId" : "putIntegrationDeviceStorage",
+        "parameters" : [ {
+          "name" : "integrationId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "deviceId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/deviceId_storage_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Success, no content"
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413" : {
+            "description" : "Content Too Large",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health" : {
+      "get" : {
+        "tags" : [ "Health" ],
+        "summary" : "Health check",
+        "operationId" : "GetHealth",
+        "responses" : {
+          "200" : {
+            "description" : "Health status",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ ]
+      }
+    },
+    "/v1/devices/{deviceId}/integrations" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "description" : "Returns a list of suggested integrations for the device, and the default integration to use for the device.",
+        "parameters" : [ {
+          "name" : "deviceId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "search",
+          "in" : "query",
+          "description" : "If this query parameter is omitted from the request,\nthe integrations field will be empty in the response.\n\nIf this query parameter is an empty string,\nthe top 5 most likely integrations to match this device.\n\nIf the query parameter is a non-empty string,\nonly results that match the search term will be included\nin the integrations field.\n",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ],
+          "SessionId" : [ ]
+        } ]
+      }
+    },
+    "/v1/devices/{deviceId}/integrations/default" : {
+      "put" : {
+        "tags" : [ "Integrations" ],
+        "description" : "Updates the default integration, associated with the specified device",
+        "parameters" : [ {
+          "name" : "deviceId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/integrations_default_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "No Content, success"
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ],
+          "SessionId" : [ ]
+        } ]
+      }
+    },
+    "/graphql/playground" : {
+      "get" : {
+        "tags" : [ "GraphQL" ],
+        "responses" : {
+          "200" : {
+            "description" : "The Playground"
+          }
+        },
+        "security" : [ ]
+      }
+    },
+    "/graphql/query" : {
+      "post" : {
+        "tags" : [ "GraphQL" ],
+        "summary" : "Execute GraphQL Query",
+        "operationId" : "PostGraphQL",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/graphql_query_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "202" : {
+            "description" : "Accepted",
+            "content" : {
+              "text/event-stream" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ],
+          "SessionId" : [ ]
+        } ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "AvailableIntegration" : {
+        "required" : [ "category", "confidence", "id", "name" ],
+        "type" : "object",
+        "properties" : {
+          "confidence" : {
+            "type" : "string",
+            "description" : "An approximate representation of how strongly this integration is coorelated to the device",
+            "enum" : [ "high", "medium", "low" ]
+          },
+          "category" : {
+            "type" : "string",
+            "description" : "The integration category underwhich the integration falls.",
+            "enum" : [ "display", "camera" ]
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "A user-friendly name, shown to end users."
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "the unique identifier for the integration."
+          }
+        }
+      },
+      "HealthResponse" : {
+        "required" : [ "message" ],
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "description" : "Typically, just \"okay\""
+          }
+        }
+      },
+      "ErrorResponse" : {
+        "required" : [ "message" ],
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          },
+          "details" : {
+            "type" : "object"
+          }
+        }
+      },
+      "inline_response_200" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "string",
+            "format" : "byte",
+            "example" : "ZEdocGN5QnBjeUJoSUdKaGMyVTJOQ0JsYm1OdlpHVmtJSE4wY21sdVp3PT0="
+          }
+        }
+      },
+      "deviceId_storage_body" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "string",
+            "format" : "byte",
+            "example" : "ZEdocGN5QnBjeUJoSUdKaGMyVTJOQ0JsYm1OdlpHVmtJSE4wY21sdVp3PT0="
+          }
+        }
+      },
+      "inline_response_200_1" : {
+        "required" : [ "integrations" ],
+        "type" : "object",
+        "properties" : {
+          "suggestion" : {
+            "description" : "populated with an integration that is likely a better fit for the device than the currently select (default) integration. This suggestion can be dismissed by setting the default integration again, using PUT /v1/devices/{deviceId}/integrations/default\n",
+            "nullable" : true,
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/AvailableIntegration"
+            } ]
+          },
+          "defaultIntegration" : {
+            "description" : "the user-selected integration to use for this device\n",
+            "nullable" : true,
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/AvailableIntegration"
+            } ]
+          },
+          "integrations" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/AvailableIntegration"
+            }
+          }
+        }
+      },
+      "integrations_default_body" : {
+        "required" : [ "integrationId" ],
+        "type" : "object",
+        "properties" : {
+          "integrationId" : {
+            "type" : "string"
+          }
+        }
+      },
+      "graphql_query_body" : {
+        "required" : [ "query" ],
+        "type" : "object",
+        "properties" : {
+          "query" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "ApiKey" : {
+        "type" : "apiKey",
+        "description" : "This header is typically used in tandem with the session id scheme, and is used for api to api communication, such as from OvrC to Interop.\n",
+        "name" : "X-API-Key",
+        "in" : "header"
+      },
+      "SessionId" : {
+        "type" : "apiKey",
+        "description" : "The session id scheme is typically used in tandem with the api key scheme. It is typically used for requests sent from OvrC to the Interop API. The session id should be the OvrC user's session id.\n",
+        "name" : "X-Session-ID",
+        "in" : "header"
+      },
+      "BearerJWT" : {
+        "type" : "http",
+        "description" : "This scheme is used for scenarios where an interop JWT is used for authentication, such as for endpoints invoked by external integrations.\n",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}
